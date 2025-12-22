@@ -163,51 +163,62 @@ or
 
 pip install -r requirements.txt
 
-Notebook Execution Order
+```
 
-01_data_loading_and_qc.ipynb
+## ▶️ Notebook Execution Order
 
-02_exploratory_data_analysis.ipynb
+Run the notebooks in the following order to reproduce the full pipeline:
 
-03_feature_engineering.ipynb
+1. **`01_data_loading_and_qc.ipynb`**  
+   Load TCGA mutation and clinical data, perform quality control and filtering.
 
-04_model_training_and_evaluation.ipynb
+2. **`02_exploratory_data_analysis.ipynb`**  
+   Explore mutation burden, mutation spectra, and cancer-type distributions.
 
-05_interpretation_and_reporting.ipynb
+3. **`03_feature_engineering.ipynb`**  
+   Construct mutation burden, gene-level, and mutation signature features.
 
-🚧 Limitations & Future Work
+4. **`04_model_training_and_evaluation.ipynb`**  
+   Train and evaluate Random Forest, XGBoost, and LightGBM models.
 
-Analysis limited to six cancer types
+5. **`05_interpretation_and_reporting.ipynb`**  
+   Analyze feature importance, confusion matrices, and export final results.
 
-Only somatic mutation data considered
+---
 
-No integration of gene expression or copy number variation
+## 🚧 Limitations & Future Work
 
-Future extensions may include:
+### Current Limitations
+- Analysis limited to **six cancer types** to control class imbalance
+- Only **somatic mutation data** considered
+- No integration of **gene expression**, **copy number variation**, or **epigenetic data**
 
-Full TCGA pan-cancer classification
+### Future Extensions
+- Extension to **full TCGA pan-cancer classification**
+- Explicit **COSMIC mutational signature deconvolution** (e.g., SBS1, SBS4)
+- Validation on **external, non-TCGA datasets**
+- Integration of additional molecular modalities for improved performance
 
-Explicit COSMIC signature deconvolution
+---
 
-External dataset validation
+## 📚 References
 
-📚 References
+Key references supporting this work include:
 
-Key references include:
+- Vogelstein et al., *Science*, 2013  
+- Jiao et al., *Nature Communications*, 2020  
+- Zeng et al., *BMC Bioinformatics*, 2021  
+- Sun et al., *Scientific Reports*, 2023  
+- TCGA Pan-Cancer Atlas publications  
 
-Vogelstein et al., Science, 2013
+📄 *A complete reference list is provided in*  
+`reports/paper/references.bib`
 
-Jiao et al., Nature Communications, 2020
+---
 
-Zeng et al., BMC Bioinformatics, 2021
+## 👤 Author
 
-Sun et al., Scientific Reports, 2023
-
-TCGA Pan-Cancer Atlas publications
-
-(See reports/paper/references.bib for full list.)
-
-👤 Author - Abdelrhman Akram Youssef
-
-Biomedical Informatics / Bioinformatics Project
+**Abdelrhman Akram Youssef**  
+Biomedical Informatics / Bioinformatics Project  
 Nile University
+
