@@ -1,148 +1,142 @@
-Cancer Mutation Detection and Classification
+# 🧬 Cancer Mutation Detection and Classification
+### Mutation-Context–Aware Pan-Cancer Classification using TCGA Somatic Mutations
 
-Mutation-Context–Aware Cancer Type Classification Using TCGA Pan-Cancer Somatic Mutation Data
+<p align="center">
+  <strong>Bioinformatics • Cancer Genomics • Machine Learning</strong><br>
+  TCGA Pan-Cancer Atlas · Mutation Signatures · Interpretable ML
+</p>
 
-📖 Project Motivation
+---
 
-Cancer is fundamentally a genetic disease driven by the accumulation of somatic mutations that disrupt key cellular pathways. Large-scale cancer genomics initiatives, most notably The Cancer Genome Atlas (TCGA), have revealed that tumors are shaped not only by mutations in driver genes, but also by the mutational processes that generate these alterations.
+## 📖 Project Motivation
 
-These mutational processes—such as aging-related deamination or smoking-induced DNA damage—leave distinct sequence-context–dependent mutation patterns, often referred to as mutational signatures. Importantly, such patterns differ systematically across tissues and cancer types.
+Cancer is fundamentally a **genetic disease**, driven by the accumulation of **somatic mutations** that disrupt critical cellular pathways. Large-scale cancer genomics initiatives—most notably **The Cancer Genome Atlas (TCGA)**—have revealed that tumors are shaped not only by mutations in *driver genes*, but also by the **mutational processes** that generate these alterations.
 
-This project explores whether somatic mutation data alone, when represented using biologically informed features, can be used to accurately and interpretably classify cancer types using machine learning.
+These processes—such as aging-related deamination or smoking-induced DNA damage—leave distinct **sequence-context–dependent mutation patterns**, commonly referred to as **mutational signatures**. Importantly, such patterns differ systematically across tissues and cancer types.
 
-🎯 Project Objectives
+🔍 **This project investigates whether somatic mutation data alone**, when represented using biologically informed features, can be used to **accurately and interpretably classify cancer types** using machine learning.
 
-Process large-scale TCGA somatic mutation data
+---
 
-Identify and retain high-confidence, non-synonymous mutations
+## 🎯 Objectives
 
-Engineer biologically meaningful mutation-derived features, including:
+- Process large-scale TCGA somatic mutation data  
+- Retain high-confidence **non-synonymous mutations**  
+- Engineer biologically meaningful mutation-derived features:
+  - Tumor mutational burden  
+  - Mutation class composition  
+  - Gene-level mutation frequencies  
+  - Trinucleotide (96-context) mutation signatures  
+- Train and compare multiple machine-learning models  
+- Interpret key biological drivers of model predictions  
 
-Tumor mutational burden
+---
 
-Mutation class composition
+## 🧬 Data Sources
 
-Gene-level mutation frequencies
+### **TCGA Pan-Cancer Atlas (MC3)**
+- Harmonized somatic mutation dataset
+- Consensus mutation calls across multiple pipelines
+- High-confidence variants suitable for pan-cancer analysis
 
-Trinucleotide (96-context) mutation signatures
+### **Clinical Metadata**
+- Cancer type labels from TCGA project identifiers  
+- Survival data obtained but not modeled in this study  
 
-Train and evaluate multiple machine learning models
+### **Reference Data**
+- **GRCh37 (hg19)** reference genome for mutation context extraction  
+- **COSMIC Cancer Gene Census** for curated cancer genes  
 
-Interpret the biological relevance of predictive features
+---
 
-🧬 Data Sources
-TCGA Pan-Cancer Atlas (MC3)
+## 🧪 Cancer Types Analyzed
 
-Harmonized somatic mutation dataset generated from multiple variant-calling pipelines
+To balance biological diversity with robust sample sizes, six cancer types were selected:
 
-Provides high-confidence somatic mutations across 33 cancer types
+| Code | Cancer Type |
+|-----:|-------------|
+| BRCA | Breast Invasive Carcinoma |
+| COAD | Colon Adenocarcinoma |
+| LUAD | Lung Adenocarcinoma |
+| LUSC | Lung Squamous Cell Carcinoma |
+| PRAD | Prostate Adenocarcinoma |
+| STAD | Stomach Adenocarcinoma |
 
-Clinical Metadata
+---
 
-Cancer type labels derived from TCGA project identifiers
+## ⚙️ Methodology Overview
 
-Clinical survival data obtained but not used for modeling in this study
+### 🔹 1. Mutation Processing
+- Retained **non-synonymous somatic mutations** only  
+- Aggregated variant-level data to **tumor-sample–level vectors**
 
-Reference Data
+### 🔹 2. Feature Engineering
 
-GRCh37 (hg19) reference genome for mutation context extraction
+#### **Mutation Burden & Variant-Type Features**
+- Total mutation count per tumor  
+- Counts of missense, nonsense, frameshift, splice-site mutations  
 
-COSMIC Cancer Gene Census for curated cancer-related genes
+#### **Gene-Level Mutation Features**
+- Mutation counts for the **top 50 most frequently mutated genes**
+- Preserves quantitative signal while limiting dimensionality
 
-🧪 Cancer Types Analyzed
+#### **Trinucleotide Mutation Context Features**
+- Extraction of 5′ and 3′ flanking bases from hg19
+- Normalization to pyrimidine context
+- Construction of **96 trinucleotide mutation categories**
+- Per-sample normalization to relative frequencies
 
-To ensure sufficient sample size per class and avoid extreme class imbalance, the analysis focuses on six biologically diverse cancer types:
+🧠 These features approximate known **COSMIC mutational signatures** and capture underlying mutational processes.
 
-BRCA – Breast Invasive Carcinoma
+---
 
-COAD – Colon Adenocarcinoma
+## 🤖 Machine Learning Framework
 
-LUAD – Lung Adenocarcinoma
+- Problem formulated as a **6-class classification task**
+- Models evaluated:
+  - Random Forest
+  - XGBoost
+  - LightGBM
+  - Stacked ensemble (evaluated, not selected)
 
-LUSC – Lung Squamous Cell Carcinoma
+📏 **Evaluation Metrics**
+- Accuracy  
+- Precision / Recall  
+- **Macro-averaged F1-score** (primary metric)
 
-PRAD – Prostate Adenocarcinoma
+---
 
-STAD – Stomach Adenocarcinoma
+## 🏆 Final Model & Performance
 
-⚙️ Methodology Overview
-1. Mutation Filtering and Aggregation
+**Best Model:** Tuned **LightGBM**  
+**Feature Set:**
+- Mutation burden features  
+- Gene-level mutation counts  
+- 96-context mutation signatures  
 
-Retained only non-synonymous somatic mutations
+### 📊 Performance
+- **Accuracy:** ~**75%**
+- **Macro F1-score:** ~**0.74**
 
-Aggregated variant-level data at the tumor-sample level to enable supervised learning
+Strong performance was observed for **LUSC, COAD, and BRCA**, with biologically meaningful confusion patterns between related cancer types.
 
-2. Feature Engineering
-Mutation Burden & Variant-Type Features
+---
 
-Total non-synonymous mutation count per tumor
+## 🔍 Interpretability & Biological Insight
 
-Counts of mutation classes (missense, nonsense, frameshift, splice-site, etc.)
+Feature importance analysis shows:
 
-Gene-Level Mutation Features
+- Trinucleotide mutation contexts dominate predictive power  
+- C>T and C>A substitutions align with known mutational processes  
+- Gene-level features (e.g., **TP53**, **KRAS**, **PIK3CA**, **APC**) provide complementary biological signal  
 
-Mutation counts for the top 50 most frequently mutated genes
+✅ This confirms that **mutational processes**, not only driver genes, are essential for mutation-based cancer classification.
 
-Preserves quantitative mutation information while limiting dimensionality
+---
 
-Trinucleotide Mutation Context Features
+## 📂 Repository Structure
 
-Extraction of 5′ and 3′ flanking bases for each SNV using the reference genome
 
-Normalization to pyrimidine context
-
-Construction of 96 trinucleotide mutation categories
-
-Per-sample normalization to relative frequencies (signature-like representation)
-
-These features approximate known COSMIC mutational signatures and capture underlying mutagenic processes.
-
-🤖 Machine Learning Framework
-
-The task is formulated as a six-class classification problem.
-The following models were evaluated:
-
-Random Forest
-
-XGBoost
-
-LightGBM
-
-Stacked ensemble (evaluated, but not selected)
-
-Evaluation was performed using stratified train–test splits and class-balanced metrics, with macro-averaged F1-score as the primary performance measure.
-
-🏆 Final Model & Performance
-
-Best-performing model: Tuned LightGBM
-Feature set:
-
-Mutation burden features
-
-Gene-level mutation counts
-
-96-context mutation signature features
-
-Performance:
-
-Accuracy: ~75%
-
-Macro F1-score: ~0.74
-
-Mutation-context features were the strongest predictors, followed by key cancer genes such as TP53, KRAS, PIK3CA, and APC.
-
-🔍 Interpretability & Biological Insight
-
-Feature importance analysis shows that:
-
-Trinucleotide mutation contexts dominate predictive performance
-
-C>T and C>A substitutions in specific sequence contexts align with known biological processes
-
-Gene-level mutation features provide complementary, biologically interpretable signals
-
-This confirms that modeling mutational processes, not only driver genes, is critical for mutation-based cancer classification.
-📂 Repository Structure
 cancer-mutation-classification/
 ├── data_raw/                # Original TCGA & reference data
 ├── data_processed/          # Cleaned data and engineered features
@@ -154,11 +148,16 @@ cancer-mutation-classification/
 ├── requirements.txt
 └── environment.yml
 
-▶️ How to Run
-Environment Setup
+
+---
+
+## ▶️ How to Run
+
+### 🔧 Environment Setup
+
+```bash
 conda env create -f environment.yml
 conda activate cancer-mutation-classification
-
 
 or
 
